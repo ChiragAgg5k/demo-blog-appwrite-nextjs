@@ -13,10 +13,10 @@ export default function CTA() {
           world. It's free and easy to get started.
         </p>
         <Link
-          href="#"
-          className="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 sm:w-auto"
+          href="/auth"
+          className="mt-8 w-auto px-10 inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50"
         >
-          Sign up for free
+          Get started
         </Link>
       </div>
     </div>

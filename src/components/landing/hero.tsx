@@ -15,22 +15,24 @@ export default function Hero() {
               </h1>
               <p className="mt-3 text-center text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
                 A simple and powerful blog platform built with Next.js and
-                Appwrite. Share your thoughts, connect with readers, and grow
-                your audience.
+                <span className="text-indigo-600 ml-2">Appwrite</span>. Share
+                your thoughts, connect with readers, and grow your audience.
               </p>
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                 <div className="rounded-md bg-indigo-600 shadow-xl">
                   <Link
-                    href="#"
-                    className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-3 md:text-lg md:px-10"
+                    href="/auth"
+                    className="w-full flex items-center justify-center px-8 py-2 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:text-lg md:px-10"
                   >
                     Get started
                   </Link>
                 </div>
                 <div className="mt-3 border rounded-md border-indigo-600 sm:mt-0 sm:ml-3">
                   <Link
-                    href="#"
-                    className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 md:py-3 md:text-lg md:px-10"
+                    href="https://github.com/ChiragAgg5k/demo-blog-appwrite-nextjs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-center px-8 py-2 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 md:py-2 md:text-lg md:px-10"
                   >
                     Learn more
                   </Link>
