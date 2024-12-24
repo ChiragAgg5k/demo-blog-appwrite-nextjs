@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import React from "react";
 import { FaGoogle } from "react-icons/fa";
 
@@ -24,8 +23,6 @@ export default function AuthPage() {
     "default",
   );
   const [isLoading, setIsLoading] = React.useState(false);
-
-  const router = useRouter();
 
   async function onSubmit(
     event: React.SyntheticEvent,
