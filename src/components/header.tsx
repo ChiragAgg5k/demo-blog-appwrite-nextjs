@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser } from "@/components/context/auth-context";
-import { Pen } from "lucide-react";
+import { SquarePenIcon } from "@/components/icons/square-pen";
 import Link from "next/link";
 
 export default function Header() {
@@ -13,7 +13,7 @@ export default function Header() {
         <div className="w-full py-6 flex items-center justify-between border-b border-indigo-500">
           <div className="flex items-center">
             <Link href="/">
-              <Pen className="h-8 w-auto text-indigo-600 hover:text-indigo-700 hover:scale-105 transition-all duration-300" />
+              <SquarePenIcon />
             </Link>
           </div>
           {user ? (

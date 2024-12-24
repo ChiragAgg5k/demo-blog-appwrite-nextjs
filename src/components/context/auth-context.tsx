@@ -1,7 +1,7 @@
 "use client";
 
 import account from "@/lib/appwrite";
-import { ID, Models, OAuthProvider } from "appwrite";
+import { ID, OAuthProvider } from "appwrite";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -29,15 +29,18 @@ export function useUser() {
   return useContext(UserContext);
 }
 
-export function AuthProvider(props: React.PropsWithChildren<{}>) {
+export function AuthProvider(props: React.PropsWithChildren<unknown>) {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
   async function login(email: string, password: string) {
-    const loggedIn: Models.Session = await account.createEmailPasswordSession(
-      email,
-      password,
-    );
+    try {
+      await account.createEmailPasswordSession(email, password);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+    }
 
     const user = await account.get();
 
@@ -60,7 +63,7 @@ export function AuthProvider(props: React.PropsWithChildren<{}>) {
   async function logout() {
     await account.deleteSession("current");
     setUser(null);
-    router.push("/");
+    router.push("/?success=signout");
   }
 
   async function register(email: string, password: string, name: string) {
@@ -73,6 +76,7 @@ export function AuthProvider(props: React.PropsWithChildren<{}>) {
       const loggedIn = (await account.get()) as unknown as User;
       setUser(loggedIn);
     } catch (err) {
+      console.log(err);
       setUser(null);
     }
   }

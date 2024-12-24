@@ -9,8 +9,7 @@ export default function CTA() {
           <span className="block">Create your account today.</span>
         </h2>
         <p className="mt-4 text-lg leading-6 text-indigo-200">
-          Join our community of writers and start sharing your ideas with the
-          world. It's free and easy to get started.
+          {`Join our community of writers and start sharing your ideas with the world. It's free and easy to get started.`}
         </p>
         <Link
           href="/auth"

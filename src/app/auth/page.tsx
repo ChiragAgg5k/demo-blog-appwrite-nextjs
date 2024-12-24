@@ -40,10 +40,14 @@ export default function AuthPage() {
         await account.create(ID.unique(), email, password, name);
       }
 
-      router.push("/");
-    } catch (error: any) {
+      router.push("/?success=signin");
+    } catch (error: unknown) {
       console.log(error);
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unknown error occurred");
+      }
     } finally {
       setIsLoading(false);
     }

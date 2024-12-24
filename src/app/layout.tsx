@@ -1,7 +1,10 @@
 import { AuthProvider } from "@/components/context/auth-context";
-import Header from "@/components/landing/header";
+import Header from "@/components/header";
+import SuccessAuth from "@/components/landing/success-auth";
+import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,6 +20,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Demo Blog Appwrite Next.js",
   description: "A demo blog app using Appwrite and Next.js",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
@@ -32,6 +38,10 @@ export default function RootLayout({
         <AuthProvider>
           <Header />
           {children}
+          <Toaster />
+          <Suspense fallback={<></>}>
+            <SuccessAuth />
+          </Suspense>
         </AuthProvider>
       </body>
     </html>

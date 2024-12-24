@@ -16,7 +16,7 @@ export default function Footer() {
           </Link>
         </div>
         <div className="mt-8 md:mt-0 md:order-1">
-          <p className="text-center text-base text-gray-400">
+          <p className="text-center text-base text-gray-500">
             &copy; 2024 Demo Blog. All rights reserved.
           </p>
         </div>

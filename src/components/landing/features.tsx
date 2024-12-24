@@ -29,8 +29,11 @@ const features = [
 
 export default function Features() {
   return (
-    <div className="py-12 bg-white mb-12" id="features">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div
+      className="py-12 bg-white min-h-[calc(100vh-100px)] flex flex-col items-center justify-center mb-12"
+      id="features"
+    >
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">
             Features
