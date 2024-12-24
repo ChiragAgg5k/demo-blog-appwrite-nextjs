@@ -32,9 +32,7 @@ export default function Hero() {
                 </div>
                 <div className="mt-3 border rounded-md border-indigo-600 sm:mt-0 sm:ml-3">
                   <Link
-                    href="https://github.com/ChiragAgg5k/demo-blog-appwrite-nextjs"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="/blogs"
                     className="w-full flex items-center justify-center px-8 py-2 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white hover:bg-indigo-100 transition-all duration-200 md:py-2 md:text-lg md:px-10"
                   >
                     Read Blogs

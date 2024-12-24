@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { redirect } from "next/navigation";
+import { useState } from "react";
 
 const formatDate = (date: string) => {
   const now = new Date();
@@ -28,8 +29,10 @@ const formatDate = (date: string) => {
 export default function Profile() {
   const { user, logout, isAuthenticated } = useUser();
 
+  const [loading, setLoading] = useState(false);
+
   if (isAuthenticated === false) {
-    return redirect("/login");
+    return redirect("/auth");
   }
 
   return (
@@ -54,9 +57,13 @@ export default function Profile() {
           </p>
           <Button
             className="bg-indigo-500 text-white hover:bg-indigo-600"
-            onClick={logout}
+            onClick={() => {
+              setLoading(true);
+              logout();
+            }}
+            disabled={loading}
           >
-            Logout
+            {loading ? "Logging out..." : "Logout"}
           </Button>
         </CardContent>
       </Card>
