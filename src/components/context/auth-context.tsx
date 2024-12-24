@@ -7,17 +7,20 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 export interface User {
   $id: string;
+  $createdAt: string;
   email: string;
   name: string;
 }
 
 const UserContext = createContext<{
+  isAuthenticated: boolean | null;
   user: User | null;
   register: (email: string, password: string, name: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   loginWithGoogle: () => Promise<void>;
 }>({
+  isAuthenticated: null,
   user: null,
   register: () => Promise.resolve(),
   login: () => Promise.resolve(),
@@ -31,6 +34,7 @@ export function useUser() {
 
 export function AuthProvider(props: React.PropsWithChildren<unknown>) {
   const [user, setUser] = useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const router = useRouter();
 
   async function login(email: string, password: string) {
@@ -46,9 +50,12 @@ export function AuthProvider(props: React.PropsWithChildren<unknown>) {
 
     setUser({
       $id: user.$id,
+      $createdAt: user.$createdAt,
       email: user.email,
       name: user.name,
     });
+
+    setIsAuthenticated(true);
 
     router.push("/profile");
   }
@@ -75,9 +82,11 @@ export function AuthProvider(props: React.PropsWithChildren<unknown>) {
     try {
       const loggedIn = (await account.get()) as unknown as User;
       setUser(loggedIn);
+      setIsAuthenticated(true);
     } catch (err) {
       console.log(err);
       setUser(null);
+      setIsAuthenticated(false);
     }
   }
 
@@ -87,7 +96,14 @@ export function AuthProvider(props: React.PropsWithChildren<unknown>) {
 
   return (
     <UserContext.Provider
-      value={{ user, login, logout, register, loginWithGoogle }}
+      value={{
+        user,
+        isAuthenticated,
+        login,
+        logout,
+        register,
+        loginWithGoogle,
+      }}
     >
       {props.children}
     </UserContext.Provider>
