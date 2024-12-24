@@ -29,13 +29,17 @@ export default function AuthPage() {
     type: "signin" | "signup",
   ) {
     event.preventDefault();
-    setIsLoading(true);
-    setError("");
 
-    if (!email || !password || (type === "signup" && !name)) {
+    if (
+      signInType === "default" &&
+      (!email || !password || (type === "signup" && !name))
+    ) {
       setError("Please fill all fields");
       return;
     }
+
+    setIsLoading(true);
+    setError("");
 
     try {
       if (type === "signin") {
@@ -99,7 +103,6 @@ export default function AuthPage() {
                           placeholder="name@example.com"
                           type="email"
                           autoComplete="email"
-                          required
                           value={email}
                           onChange={(event) => setEmail(event.target.value)}
                           disabled={isLoading}
@@ -116,8 +119,8 @@ export default function AuthPage() {
                         <Input
                           id="signin-password"
                           type="password"
-                          required
                           disabled={isLoading}
+                          placeholder="********"
                           value={password}
                           onChange={(event) => setPassword(event.target.value)}
                           className="transition-colors focus:ring-2"
@@ -181,6 +184,7 @@ export default function AuthPage() {
                         <Input
                           id="signup-password"
                           type="password"
+                          placeholder="********"
                           required
                           disabled={isLoading}
                           className="transition-colors focus:ring-2"

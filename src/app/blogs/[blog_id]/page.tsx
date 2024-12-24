@@ -1,4 +1,8 @@
 import { database } from "@/lib/appwrite";
+import {
+  APPWRITE_BLOGS_COLLECTION_ID,
+  APPWRITE_DATABASE_ID,
+} from "@/lib/constants";
 
 export default async function Blog({
   params,
@@ -8,8 +12,8 @@ export default async function Blog({
   const { blog_id } = await params;
 
   const blog = await database.getDocument(
-    "demo-blog-appwrite-nextjs",
-    "blogs",
+    APPWRITE_DATABASE_ID,
+    APPWRITE_BLOGS_COLLECTION_ID,
     blog_id,
   );
 

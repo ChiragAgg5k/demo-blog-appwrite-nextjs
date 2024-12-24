@@ -1,7 +1,11 @@
 "use client";
 
-import { account } from "@/lib/appwrite";
-import { ID, OAuthProvider } from "appwrite";
+import { account, database } from "@/lib/appwrite";
+import {
+  APPWRITE_DATABASE_ID,
+  APPWRITE_USERS_COLLECTION_ID,
+} from "@/lib/constants";
+import { ID, OAuthProvider, Permission, Query, Role } from "appwrite";
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -42,25 +46,12 @@ export function AuthProvider(props: React.PropsWithChildren<unknown>) {
   async function login(email: string, password: string) {
     try {
       await account.createEmailPasswordSession(email, password);
+      window.location.href = "/profile";
     } catch (error: unknown) {
       if (error instanceof Error) {
         throw new Error(error.message);
       }
     }
-
-    const user = await account.get();
-
-    setUser({
-      $id: user.$id,
-      $createdAt: user.$createdAt,
-      email: user.email,
-      name: user.name,
-      emailVerification: user.emailVerification,
-    });
-
-    setIsAuthenticated(true);
-
-    window.location.href = "/profile";
   }
 
   async function loginWithGoogle() {
@@ -88,18 +79,44 @@ export function AuthProvider(props: React.PropsWithChildren<unknown>) {
     toast.success("Please check your email for a verification link");
   }
 
-  async function init() {
-    try {
-      const loggedIn = (await account.get()) as unknown as User;
-      setUser(loggedIn);
-      setIsAuthenticated(true);
-    } catch {
-      setUser(null);
-      setIsAuthenticated(false);
+  async function verifyAndCreateProfile(loggedInUser: User) {
+    const profile = await database.listDocuments(
+      APPWRITE_DATABASE_ID,
+      APPWRITE_USERS_COLLECTION_ID,
+      [Query.equal("userId", loggedInUser.$id)],
+    );
+
+    if (profile.documents.length === 0) {
+      await database.createDocument(
+        APPWRITE_DATABASE_ID,
+        APPWRITE_USERS_COLLECTION_ID,
+        ID.unique(),
+        {
+          userId: loggedInUser.$id,
+          name: loggedInUser.name,
+          email: loggedInUser.email,
+        },
+        [
+          Permission.read(Role.any()),
+          Permission.write(Role.user(loggedInUser.$id)),
+        ],
+      );
     }
   }
 
   useEffect(() => {
+    async function init() {
+      try {
+        const loggedIn = (await account.get()) as unknown as User;
+        await verifyAndCreateProfile(loggedIn);
+        setUser(loggedIn);
+        setIsAuthenticated(true);
+      } catch {
+        setUser(null);
+        setIsAuthenticated(false);
+      }
+    }
+
     init();
   }, []);
 

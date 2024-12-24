@@ -33,6 +33,8 @@ More information on how to setup Appwrite can be found in the [docs](./docs/appw
 pnpm dev
 ```
 
+Additionally, you can change some settings in [constants.ts](./src/lib/constants.ts) to customize the blog.
+
 ---
 
 Made with ❤️ by [Chirag Aggarwal](https://www.chiragaggarwal.tech/).
