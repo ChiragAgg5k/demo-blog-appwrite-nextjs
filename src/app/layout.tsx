@@ -1,6 +1,5 @@
 import { AuthProvider } from "@/components/context/auth-context";
 import Header from "@/components/header";
-import SuccessAuth from "@/components/landing/success-auth";
 import { Toaster } from "@/components/ui/sonner";
 import {
   SITE_DESCRIPTION,
@@ -50,14 +49,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider>
-          <Header />
-          {children}
-          <Toaster />
-          <Suspense fallback={<></>}>
-            <SuccessAuth />
-          </Suspense>
-        </AuthProvider>
+        <Suspense fallback={<></>}>
+          <AuthProvider>
+            <Header />
+            {children}
+            <Toaster />
+          </AuthProvider>
+        </Suspense>
       </body>
     </html>
   );
