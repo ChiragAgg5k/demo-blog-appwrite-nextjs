@@ -1,10 +1,14 @@
 import { database } from "@/lib/appwrite";
+import {
+  APPWRITE_BLOGS_COLLECTION_ID,
+  APPWRITE_DATABASE_ID,
+} from "@/lib/constants";
 import Link from "next/link";
 
 export default async function BlogsPage() {
   const blogs = await database.listDocuments(
-    "demo-blog-appwrite-nextjs",
-    "blogs",
+    APPWRITE_DATABASE_ID,
+    APPWRITE_BLOGS_COLLECTION_ID,
   );
 
   return (
@@ -17,6 +21,19 @@ export default async function BlogsPage() {
         ideas with the world.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {blogs.total === 0 && (
+          <div className="col-span-full h-[50vh] flex items-center justify-center">
+            <p className="text-center text-gray-500">
+              No blogs yet.
+              <Link
+                href="/blogs/create"
+                className="text-indigo-600 ml-2 hover:underline"
+              >
+                Be the first to write one!
+              </Link>
+            </p>
+          </div>
+        )}
         {blogs.documents.map((blog) => (
           <Link
             href={`/blogs/${blog.$id}`}

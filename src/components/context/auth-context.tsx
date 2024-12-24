@@ -2,14 +2,15 @@
 
 import { account } from "@/lib/appwrite";
 import { ID, OAuthProvider } from "appwrite";
-import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export interface User {
   $id: string;
   $createdAt: string;
   email: string;
   name: string;
+  emailVerification: boolean;
 }
 
 const UserContext = createContext<{
@@ -19,6 +20,7 @@ const UserContext = createContext<{
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   loginWithGoogle: () => Promise<void>;
+  verifyEmail: () => Promise<void>;
 }>({
   isAuthenticated: null,
   user: null,
@@ -26,6 +28,7 @@ const UserContext = createContext<{
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   loginWithGoogle: () => Promise.resolve(),
+  verifyEmail: () => Promise.resolve(),
 });
 
 export function useUser() {
@@ -35,7 +38,6 @@ export function useUser() {
 export function AuthProvider(props: React.PropsWithChildren<unknown>) {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const router = useRouter();
 
   async function login(email: string, password: string) {
     try {
@@ -53,11 +55,12 @@ export function AuthProvider(props: React.PropsWithChildren<unknown>) {
       $createdAt: user.$createdAt,
       email: user.email,
       name: user.name,
+      emailVerification: user.emailVerification,
     });
 
     setIsAuthenticated(true);
 
-    router.push("/profile");
+    window.location.href = "/profile";
   }
 
   async function loginWithGoogle() {
@@ -70,12 +73,19 @@ export function AuthProvider(props: React.PropsWithChildren<unknown>) {
   async function logout() {
     await account.deleteSession("current");
     setUser(null);
-    router.push("/?success=signout");
+    window.location.href = "/?success=signout";
   }
 
   async function register(email: string, password: string, name: string) {
     await account.create(ID.unique(), email, password, name);
-    await login(email, password);
+    await verifyEmail();
+  }
+
+  async function verifyEmail() {
+    await account.createVerification(
+      new URL("/verify", window.location.href).toString(),
+    );
+    toast.success("Please check your email for a verification link");
   }
 
   async function init() {
@@ -83,8 +93,7 @@ export function AuthProvider(props: React.PropsWithChildren<unknown>) {
       const loggedIn = (await account.get()) as unknown as User;
       setUser(loggedIn);
       setIsAuthenticated(true);
-    } catch (err) {
-      console.log(err);
+    } catch {
       setUser(null);
       setIsAuthenticated(false);
     }
@@ -103,6 +112,7 @@ export function AuthProvider(props: React.PropsWithChildren<unknown>) {
         logout,
         register,
         loginWithGoogle,
+        verifyEmail,
       }}
     >
       {props.children}

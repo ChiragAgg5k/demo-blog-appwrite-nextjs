@@ -2,6 +2,13 @@ import { AuthProvider } from "@/components/context/auth-context";
 import Header from "@/components/header";
 import SuccessAuth from "@/components/landing/success-auth";
 import { Toaster } from "@/components/ui/sonner";
+import {
+  SITE_DESCRIPTION,
+  SITE_IMAGE,
+  SITE_LOGO,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/constants";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
@@ -18,16 +25,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Demo Blog",
-  description: "A demo blog app using Appwrite and Next.js",
+  title: SITE_NAME,
+  description: SITE_DESCRIPTION,
   icons: {
-    icon: "/icon.svg",
+    icon: SITE_LOGO,
   },
-  metadataBase: new URL("https://demo-blog-appwrite-nextjs.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   openGraph: {
     images: [
       {
-        url: "/preview-16x9.png",
+        url: SITE_IMAGE,
       },
     ],
   },

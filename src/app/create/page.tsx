@@ -13,6 +13,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { database } from "@/lib/appwrite";
+import {
+  APPWRITE_BLOGS_COLLECTION_ID,
+  APPWRITE_DATABASE_ID,
+} from "@/lib/constants";
 import { ID, Permission, Role } from "appwrite";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -60,8 +64,8 @@ export default function Create() {
       setIsLoading(true);
 
       const document = await database.createDocument(
-        "demo-blog-appwrite-nextjs", // database id
-        "blogs", // collection id
+        APPWRITE_DATABASE_ID, // database id
+        APPWRITE_BLOGS_COLLECTION_ID, // collection id
         ID.unique(),
         {
           author_id: user.$id,

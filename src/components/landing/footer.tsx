@@ -1,3 +1,4 @@
+import { GITHUB_URL } from "@/lib/constants";
 import { Github } from "lucide-react";
 import Link from "next/link";
 
@@ -8,7 +9,7 @@ export default function Footer() {
         <div className="flex justify-center space-x-6 md:order-2">
           <Link
             className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 hover:bg-indigo-100 text-gray-500 hover:text-indigo-600"
-            href="https://github.com/ChiragAgg5k/demo-blog-appwrite-nextjs"
+            href={GITHUB_URL}
             target="_blank"
             rel="noopener noreferrer"
           >
