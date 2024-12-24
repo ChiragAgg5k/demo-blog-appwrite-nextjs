@@ -1,10 +1,12 @@
 import { database } from "@/lib/appwrite";
 
 export default async function Blog({
-  params: { blog_id },
+  params,
 }: {
-  params: { blog_id: string };
+  params: Promise<{ blog_id: string }>;
 }) {
+  const { blog_id } = await params;
+
   const blog = await database.getDocument(
     "demo-blog-appwrite-nextjs",
     "blogs",
@@ -12,7 +14,7 @@ export default async function Blog({
   );
 
   return (
-    <div className="container mx-auto my-10">
+    <div className="container mx-auto my-10 px-4">
       <h1 className="text-2xl font-bold text-center text-indigo-600 mb-4">
         {blog.title}
       </h1>
