@@ -1,23 +1,30 @@
 "use client";
 
+import { useUser } from "@/components/context/auth-context";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import account from "@/lib/appwrite";
-import { ID } from "appwrite";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { FaGoogle } from "react-icons/fa";
 
 export default function AuthPage() {
-  const [isLoading, setIsLoading] = React.useState(false);
+  const { register, login, loginWithGoogle } = useUser();
+
+  const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [name, setName] = React.useState("");
+
   const [error, setError] = React.useState("");
+
+  const [signInType, setSignInType] = React.useState<"default" | "google">(
+    "default",
+  );
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const router = useRouter();
 
   async function onSubmit(
@@ -35,12 +42,14 @@ export default function AuthPage() {
 
     try {
       if (type === "signin") {
-        await account.createEmailPasswordSession(email, password);
+        if (signInType === "default") {
+          await login(email, password);
+        } else {
+          await loginWithGoogle();
+        }
       } else {
-        await account.create(ID.unique(), email, password, name);
+        await register(email, password, name);
       }
-
-      router.push("/?success=signin");
     } catch (error: unknown) {
       console.log(error);
       if (error instanceof Error) {
@@ -130,7 +139,10 @@ export default function AuthPage() {
                           "Sign In"
                         )}
                       </Button>
-                      <Button className="w-full bg-indigo-500 hover:bg-indigo-600 text-white">
+                      <Button
+                        className="w-full bg-indigo-500 hover:bg-indigo-600 text-white"
+                        onClick={() => setSignInType("google")}
+                      >
                         Continue with Google
                         <FaGoogle />
                       </Button>

@@ -35,7 +35,7 @@ export default function Hero() {
                     href="https://github.com/ChiragAgg5k/demo-blog-appwrite-nextjs"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center px-8 py-2 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 md:py-2 md:text-lg md:px-10"
+                    className="w-full flex items-center justify-center px-8 py-2 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-white hover:bg-indigo-100 transition-all duration-200 md:py-2 md:text-lg md:px-10"
                   >
                     Read Blogs
                   </Link>
@@ -76,7 +76,6 @@ export default function Hero() {
         numSquares={30}
         maxOpacity={0.1}
         duration={3}
-        repeatDelay={1}
         className={cn(
           "[mask-image:radial-gradient(600px_circle_at_center,white,transparent)]",
           "absolute right-0 inset-y-[-40%] inset-x-[25%] h-[200%] skew-y-12 opacity-60",

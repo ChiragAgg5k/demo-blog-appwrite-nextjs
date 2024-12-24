@@ -18,10 +18,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Demo Blog Appwrite Next.js",
+  title: "Demo Blog",
   description: "A demo blog app using Appwrite and Next.js",
   icons: {
     icon: "/icon.svg",
+  },
+  metadataBase: new URL("https://demo-blog-appwrite-nextjs.vercel.app"),
+  openGraph: {
+    images: [
+      {
+        url: "/preview-16x9.png",
+      },
+    ],
   },
 };
 

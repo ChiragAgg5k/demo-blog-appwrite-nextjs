@@ -25,7 +25,7 @@ export default function HeroCard({
   return (
     <Card
       className={cn(
-        "w-fit hover:scale-105 transition-all duration-200 hidden lg:block",
+        "w-fit hover:scale-105 transition-all duration-200 hidden lg:block hover:cursor-default",
         className,
       )}
       style={style}
