@@ -18,7 +18,21 @@ Note down your project ID to be used as `NEXT_PUBLIC_APPWRITE_PROJECT_ID` in the
 
 ![Create Organization](./images/create-organization.png)
 
-### Set up your project
+### Using Appwrite.json
+
+All the settings required in the cloud configuration are present in the `appwrite.json` file. Firstly, download appwrite cli from [here](https://appwrite.io/docs/tooling/command-line/installation).
+
+To push the settings to the cloud, run the following command:
+
+```bash
+appwrite login
+appwrite init # select the existing project you created
+appwrite push
+```
+
+### Setting your project with Appwrite.json
+
+If somehow there is an error in the `appwrite.json` file, you can manually set up your project by following the steps below:
 
 1. Once your project is created, you'll be redirected to the project dashboard.
 2. Go to the Authentication section and switch to the Settings tab.
