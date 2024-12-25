@@ -13,21 +13,13 @@ export default async ({ req, res, log }) => {
 
   log(`Creating profile for user ${JSON.stringify(req.body, null, 2)}`);
 
-  if (!req.body.$id) {
-    log("User ID is required");
-    return res.json({
-      success: false,
-      message: "User ID is required",
-    });
-  }
-
-  const user = await database.getDocument(
+  const profile = await database.listDocuments(
     APPWRITE_DATABASE_ID,
     APPWRITE_USERS_COLLECTION_ID,
-    req.body.$id,
+    [Query.equal("$id", req.body.$id)],
   );
 
-  if (user) {
+  if (profile.total > 0) {
     log("Profile already exists for user");
     return res.empty();
   }
@@ -40,7 +32,7 @@ export default async ({ req, res, log }) => {
       name: req.body.name,
       email: req.body.email,
     },
-    [Permission.read(Role.any()), Permission.write(Role.user(user?.$id))],
+    [Permission.read(Role.any()), Permission.write(Role.user(req.body.$id))],
   );
 
   return res.json({

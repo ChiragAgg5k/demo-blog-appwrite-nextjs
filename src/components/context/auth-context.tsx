@@ -67,6 +67,7 @@ export function AuthProvider(props: React.PropsWithChildren<unknown>) {
     await account.create(ID.unique(), email, password, name);
     await account.createEmailPasswordSession(email, password);
     await verifyEmail();
+    window.location.href = "/profile";
   }
 
   async function verifyEmail() {
