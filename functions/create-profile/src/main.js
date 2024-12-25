@@ -1,4 +1,4 @@
-import { Client, Databases } from "node-appwrite";
+import { Client, Databases, Permission, Role } from "node-appwrite";
 
 const APPWRITE_DATABASE_ID = "demo-blog-appwrite-nextjs";
 const APPWRITE_USERS_COLLECTION_ID = "users";
@@ -11,7 +11,7 @@ export default async ({ req, res, log }) => {
 
   const database = new Databases(client);
 
-  log("Creating profile for user", req.body);
+  log(`Creating profile for user ${JSON.stringify(req.body, null, 2)}`);
 
   if (!req.body.$id) {
     log("User ID is required");
@@ -28,7 +28,7 @@ export default async ({ req, res, log }) => {
   );
 
   if (user) {
-    log("Profile already exists for user", req.body);
+    log("Profile already exists for user");
     return res.empty();
   }
 
@@ -40,6 +40,7 @@ export default async ({ req, res, log }) => {
       name: req.body.name,
       email: req.body.email,
     },
+    [Permission.read(Role.any()), Permission.write(Role.user(user?.$id))],
   );
 
   return res.json({
