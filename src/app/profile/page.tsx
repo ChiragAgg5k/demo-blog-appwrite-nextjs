@@ -21,25 +21,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { deleteBlog, getBlogsByUserId } from "@/lib/api";
+import { formatDate } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { Trash2Icon } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-
-const formatDate = (date: string) => {
-  const now = new Date();
-  const diffTime = Math.abs(now.getTime() - new Date(date).getTime());
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  if (diffDays < 1) {
-    return "Today";
-  }
-  if (diffDays === 1) {
-    return "Yesterday";
-  }
-  return `${diffDays} days ago`;
-};
 
 export default function Profile() {
   const { user, isAuthenticated, logout, verifyEmail } = useUser();
