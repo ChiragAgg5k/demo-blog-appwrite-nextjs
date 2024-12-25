@@ -7,6 +7,9 @@ export const SITE_IMAGE = "/preview-16x9.png";
 
 export const GITHUB_URL = "https://github.com/appwrite-nextjs-demo";
 
+export const APPWRITE_CLOUD_ENDPOINT = "https://cloud.appwrite.io/v1";
+// export const APPWRITE_CLOUD_ENDPOINT = "http://localhost/v1";
+
 export const APPWRITE_DATABASE_ID = "demo-blog-appwrite-nextjs";
 export const APPWRITE_BLOGS_COLLECTION_ID = "blogs";
 export const APPWRITE_USERS_COLLECTION_ID = "users";

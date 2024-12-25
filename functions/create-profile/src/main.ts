@@ -1,11 +1,13 @@
 import { Client, Databases, Permission, Query, Role } from "node-appwrite";
 
+const APPWRITE_CLOUD_ENDPOINT = "https://cloud.appwrite.io/v1";
+// const APPWRITE_CLOUD_ENDPOINT = "http://localhost/v1";
 const APPWRITE_DATABASE_ID = "demo-blog-appwrite-nextjs";
 const APPWRITE_USERS_COLLECTION_ID = "users";
 
 export default async ({ req, res, log }: any) => {
   const client = new Client()
-    .setEndpoint("https://cloud.appwrite.io/v1")
+    .setEndpoint(APPWRITE_CLOUD_ENDPOINT)
     .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID!)
     .setKey(req.headers["x-appwrite-key"]);
 

@@ -40,14 +40,26 @@ If somehow there is an error in the `appwrite.json` file, you can manually set u
    ![Google OAuth2](./images/google-oauth2.png)
 
 4. Go to the Database section and click on "Create Database". For database id, use `demo-blog-appwrite-nextjs`.
-5. Now create a collection called `blogs`. For collection id, use `blogs`.
+5. Create a collection called `users`. For collection id, use `users`.
+   In this collection, create the following attributes:
+   | Attribute Key | Type | Size | Required |
+   | -------------- | ---- | ---- | -------- |
+   | email | string | 256 | true |
+   | name | string | 256 | false |
+
+6. Create a collection called `blogs`. For collection id, use `blogs`.
    In this collection, create the following attributes:
    | Attribute Key | Type | Size | Required |
    | -------------- | ---- | ---- | -------- |
    | title | string | 120 | true |
    | content | string | 65535 | false |
    | author_id | string | 36 | true |
-6. Switch to the settings section of your collection.
+
+7. Switch to the settings section of your `blogs` collection.
+
    1. Enable all permissions for users to create, read, update and delete in collection (as we have document level permissions enabled).
    2. Enable document level permissions.
       ![Collection Settings](./images/collection-settings.png)
+
+8. Do the same for your `users` collection. (as in step 7)
+9.
