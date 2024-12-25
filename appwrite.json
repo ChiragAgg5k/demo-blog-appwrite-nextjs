@@ -133,8 +133,8 @@
       "timeout": 15,
       "enabled": true,
       "logging": true,
-      "entrypoint": "src/main.js",
-      "commands": "npm install",
+      "entrypoint": "dist/main.js",
+      "commands": "npm install && npm run build",
       "path": "functions/create-profile"
     }
   ]

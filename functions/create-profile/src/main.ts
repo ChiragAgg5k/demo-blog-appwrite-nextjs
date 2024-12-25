@@ -1,17 +1,27 @@
-import { Client, Databases, Permission, Role } from "node-appwrite";
+import { Client, Databases, Permission, Query, Role } from "node-appwrite";
 
 const APPWRITE_DATABASE_ID = "demo-blog-appwrite-nextjs";
 const APPWRITE_USERS_COLLECTION_ID = "users";
 
-export default async ({ req, res, log }) => {
+export default async ({ req, res, log }: any) => {
   const client = new Client()
     .setEndpoint("https://cloud.appwrite.io/v1")
-    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
+    .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID!)
     .setKey(req.headers["x-appwrite-key"]);
 
   const database = new Databases(client);
 
   log(`Creating profile for user ${JSON.stringify(req.body, null, 2)}`);
+
+  if (!req.body.$id) {
+    log(
+      "User ID is required. Please call the function after event trigger: user.*.create",
+    );
+    return res.json({
+      success: false,
+      message: "User ID is required",
+    });
+  }
 
   const profile = await database.listDocuments(
     APPWRITE_DATABASE_ID,

@@ -1,16 +1,19 @@
 {
-  "name": "starter-template",
+  "name": "create-profile",
   "version": "1.0.0",
-  "description": "",
-  "main": "src/main.js",
+  "description": "Appwrite function to create a profile for a user after they sign up",
+  "main": "dist/main.js",
   "type": "module",
   "scripts": {
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "build": "tsc"
   },
   "dependencies": {
-    "node-appwrite": "^14.1.0"
+    "node-appwrite": "^14.1.0",
+    "typescript": "^5.7.2"
   },
   "devDependencies": {
+    "@types/node": "^22.10.2",
     "prettier": "^3.2.5"
   }
 }
