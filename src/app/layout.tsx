@@ -1,4 +1,5 @@
 import { AuthProvider } from "@/components/context/auth-context";
+import { ReactQueryClientProvider } from "@/components/context/query-context";
 import Header from "@/components/header";
 import { Toaster } from "@/components/ui/sonner";
 import {
@@ -50,11 +51,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Suspense fallback={<></>}>
-          <AuthProvider>
-            <Header />
-            {children}
-            <Toaster />
-          </AuthProvider>
+          <ReactQueryClientProvider>
+            <AuthProvider>
+              <Header />
+              {children}
+              <Toaster />
+            </AuthProvider>
+          </ReactQueryClientProvider>
         </Suspense>
       </body>
     </html>

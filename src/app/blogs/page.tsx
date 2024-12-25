@@ -1,3 +1,10 @@
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { database } from "@/lib/appwrite";
 import {
   APPWRITE_BLOGS_COLLECTION_ID,
@@ -26,7 +33,7 @@ export default async function BlogsPage() {
             <p className="text-center text-gray-500">
               No blogs yet.
               <Link
-                href="/blogs/create"
+                href="/create"
                 className="text-indigo-600 ml-2 hover:underline"
               >
                 Be the first to write one!
@@ -35,20 +42,22 @@ export default async function BlogsPage() {
           </div>
         )}
         {blogs.documents.map((blog) => (
-          <Link
-            href={`/blogs/${blog.$id}`}
-            key={blog.$id}
-            className="hover:shadow-md transition-all duration-300"
-          >
-            <div className="p-4 border border-gray-200 rounded-md">
-              <h2 className="text-lg font-bold text-indigo-600 mb-2">
-                {blog.title}
-              </h2>
-              <p className="text-base text-gray-500 leading-8 line-clamp-3">
-                {blog.content}
-              </p>
-            </div>
-          </Link>
+          <Card key={blog.$id}>
+            <CardHeader>
+              <CardTitle>{blog.title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-500 line-clamp-3">{blog.content}</p>
+            </CardContent>
+            <CardFooter>
+              <Link
+                href={`/blogs/${blog.$id}`}
+                className="text-indigo-600 hover:underline"
+              >
+                Read More
+              </Link>
+            </CardFooter>
+          </Card>
         ))}
       </div>
     </div>

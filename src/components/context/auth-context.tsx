@@ -5,7 +5,7 @@ import {
   APPWRITE_DATABASE_ID,
   APPWRITE_USERS_COLLECTION_ID,
 } from "@/lib/constants";
-import { ID, OAuthProvider, Permission, Query, Role } from "appwrite";
+import { AppwriteException, ID, OAuthProvider } from "appwrite";
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -80,27 +80,25 @@ export function AuthProvider(props: React.PropsWithChildren<unknown>) {
   }
 
   async function verifyAndCreateProfile(loggedInUser: User) {
-    const profile = await database.listDocuments(
-      APPWRITE_DATABASE_ID,
-      APPWRITE_USERS_COLLECTION_ID,
-      [Query.equal("userId", loggedInUser.$id)],
-    );
-
-    if (profile.documents.length === 0) {
-      await database.createDocument(
+    try {
+      await database.getDocument(
         APPWRITE_DATABASE_ID,
         APPWRITE_USERS_COLLECTION_ID,
-        ID.unique(),
-        {
-          userId: loggedInUser.$id,
-          name: loggedInUser.name,
-          email: loggedInUser.email,
-        },
-        [
-          Permission.read(Role.any()),
-          Permission.write(Role.user(loggedInUser.$id)),
-        ],
+        loggedInUser.$id,
       );
+    } catch (error: unknown) {
+      // profile document not found, create it
+      if (error instanceof AppwriteException && error.code === 404) {
+        await database.createDocument(
+          APPWRITE_DATABASE_ID,
+          APPWRITE_USERS_COLLECTION_ID,
+          loggedInUser.$id,
+          {
+            name: loggedInUser.name,
+            email: loggedInUser.email,
+          },
+        );
+      }
     }
   }
 

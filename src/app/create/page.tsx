@@ -23,7 +23,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function Create() {
-  const { user } = useUser();
+  const { user, isAuthenticated } = useUser();
   const router = useRouter();
 
   const [title, setTitle] = useState("");
@@ -50,6 +50,11 @@ export default function Create() {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isAuthenticated === false) {
+      toast.error("You need to sign in to create a post");
+      return;
+    }
+
     if (!user) {
       toast.error("Please wait...");
       return;
