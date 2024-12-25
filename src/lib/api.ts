@@ -5,7 +5,7 @@ import {
   APPWRITE_DATABASE_ID,
 } from "./constants";
 
-interface Blog extends Models.Document {
+export interface Blog extends Models.Document {
   title: string;
   content: string;
   author_id: string;
@@ -31,5 +31,17 @@ export async function deleteBlog(blogId: string) {
     APPWRITE_DATABASE_ID,
     APPWRITE_BLOGS_COLLECTION_ID,
     blogId,
+  );
+}
+
+export async function updateBlog(blogId: string, blog: Blog) {
+  await database.updateDocument(
+    APPWRITE_DATABASE_ID,
+    APPWRITE_BLOGS_COLLECTION_ID,
+    blogId,
+    {
+      title: blog.title,
+      content: blog.content,
+    },
   );
 }

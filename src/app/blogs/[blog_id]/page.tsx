@@ -1,4 +1,6 @@
+import EditBlogModel from "@/components/blog/edit-blog-model";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Blog } from "@/lib/api";
 import { database } from "@/lib/appwrite";
 import {
   APPWRITE_BLOGS_COLLECTION_ID,
@@ -10,14 +12,14 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-export default async function Blog({
+export default async function BlogPage({
   params,
 }: {
   params: Promise<{ blog_id: string }>;
 }) {
   const { blog_id } = await params;
 
-  const blog = await database.getDocument(
+  const blog = await database.getDocument<Blog>(
     APPWRITE_DATABASE_ID,
     APPWRITE_BLOGS_COLLECTION_ID,
     blog_id,
@@ -33,9 +35,12 @@ export default async function Blog({
     <div className="container mx-auto my-10 px-4">
       <div className="flex flex-col min-h-[80vh]">
         <div className="flex-grow text-gray-600">
-          <h1 className="text-2xl font-bold text-center text-indigo-600 mb-8">
-            {blog.title}
-          </h1>
+          <div className="flex items-center justify-between  mb-8">
+            <h1 className="text-2xl font-bold text-center text-indigo-600">
+              {blog.title}
+            </h1>
+            <EditBlogModel blog={blog} />
+          </div>
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             className="prose max-w-none text-gray-600 border-t border-gray-200 pt-4"
