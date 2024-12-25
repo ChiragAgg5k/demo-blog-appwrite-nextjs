@@ -1,11 +1,7 @@
 "use client";
 
-import { account, database } from "@/lib/appwrite";
-import {
-  APPWRITE_DATABASE_ID,
-  APPWRITE_USERS_COLLECTION_ID,
-} from "@/lib/constants";
-import { AppwriteException, ID, OAuthProvider } from "appwrite";
+import { account } from "@/lib/appwrite";
+import { ID, OAuthProvider } from "appwrite";
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -69,6 +65,7 @@ export function AuthProvider(props: React.PropsWithChildren<unknown>) {
 
   async function register(email: string, password: string, name: string) {
     await account.create(ID.unique(), email, password, name);
+    await account.createEmailPasswordSession(email, password);
     await verifyEmail();
   }
 
@@ -79,34 +76,34 @@ export function AuthProvider(props: React.PropsWithChildren<unknown>) {
     toast.success("Please check your email for a verification link");
   }
 
-  async function verifyAndCreateProfile(loggedInUser: User) {
-    try {
-      await database.getDocument(
-        APPWRITE_DATABASE_ID,
-        APPWRITE_USERS_COLLECTION_ID,
-        loggedInUser.$id,
-      );
-    } catch (error: unknown) {
-      // profile document not found, create it
-      if (error instanceof AppwriteException && error.code === 404) {
-        await database.createDocument(
-          APPWRITE_DATABASE_ID,
-          APPWRITE_USERS_COLLECTION_ID,
-          loggedInUser.$id,
-          {
-            name: loggedInUser.name,
-            email: loggedInUser.email,
-          },
-        );
-      }
-    }
-  }
+  // ?: Now moved to appwrite-functions
+  // async function verifyAndCreateProfile(loggedInUser: User) {
+  //   try {
+  //     await database.getDocument(
+  //       APPWRITE_DATABASE_ID,
+  //       APPWRITE_USERS_COLLECTION_ID,
+  //       loggedInUser.$id,
+  //     );
+  //   } catch (error: unknown) {
+  //     if (error instanceof AppwriteException && error.code === 404) {
+  //       await database.createDocument(
+  //         APPWRITE_DATABASE_ID,
+  //         APPWRITE_USERS_COLLECTION_ID,
+  //         loggedInUser.$id,
+  //         {
+  //           name: loggedInUser.name,
+  //           email: loggedInUser.email,
+  //         },
+  //       );
+  //     }
+  //   }
+  // }
 
   useEffect(() => {
     async function init() {
       try {
         const loggedIn = (await account.get()) as unknown as User;
-        await verifyAndCreateProfile(loggedIn);
+        // await verifyAndCreateProfile(loggedIn);
         setUser(loggedIn);
         setIsAuthenticated(true);
       } catch {
