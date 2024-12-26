@@ -48,3 +48,6 @@ next-env.d.ts
 
 # appwrite
 appwrite/
+
+# Webstorm
+.idea/

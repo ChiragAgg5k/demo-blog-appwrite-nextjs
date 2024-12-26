@@ -1,6 +1,7 @@
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -10,13 +11,27 @@ import {
   APPWRITE_BLOGS_COLLECTION_ID,
   APPWRITE_DATABASE_ID,
 } from "@/lib/constants";
+import { formatDate } from "@/lib/utils";
+import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
+
+async function getBlogs() {
+  noStore();
+  try {
+    const blogs = await database.listDocuments(
+      APPWRITE_DATABASE_ID,
+      APPWRITE_BLOGS_COLLECTION_ID,
+    );
+    return blogs;
+  } catch (error) {
+    console.error("Error fetching blogs:", error);
+    throw new Error("Failed to fetch blogs");
+  }
+}
 
 export default async function BlogsPage() {
-  const blogs = await database.listDocuments(
-    APPWRITE_DATABASE_ID,
-    APPWRITE_BLOGS_COLLECTION_ID,
-  );
+  const blogs = await getBlogs();
 
   return (
     <div className="container mx-auto my-10 px-4">
@@ -42,14 +57,22 @@ export default async function BlogsPage() {
           </div>
         )}
         {blogs.documents.map((blog) => (
-          <Card key={blog.$id}>
+          <Card
+            key={blog.$id}
+            className="flex flex-col hover:shadow-lg transition-all duration-300"
+          >
             <CardHeader>
               <CardTitle>{blog.title}</CardTitle>
+              <CardDescription>{formatDate(blog.$createdAt)}</CardDescription>
             </CardHeader>
-            <CardContent>
-              <p className="text-gray-500 line-clamp-3">{blog.content}</p>
+            <CardContent className="flex-grow">
+              <ReactMarkdown
+                className={`prose max-w-none line-clamp-3 text-gray-500`}
+              >
+                {blog.content.substring(0, 250)}
+              </ReactMarkdown>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="">
               <Link
                 href={`/blogs/${blog.$id}`}
                 className="text-indigo-600 hover:underline"
